@@ -1,0 +1,16 @@
+# IntelliJ IDEA
+*.iml
+.idea/
+
+# Maven
+target/
+pom.xml.versionsBackup
+bundle.properties
+
+# Temporary
+*.hidden
+*.tmp
+*.temp
+*.bak
+*.log
+DRAFT.*
