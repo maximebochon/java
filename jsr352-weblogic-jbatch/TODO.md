@@ -1,0 +1,5 @@
+- déclarer la servlet à l'aide d'une annotation
+- compléter le README avec des informations sur le but du projet, sur la JSR, sur JBatch
+- paramétrer la génération des éléments
+- paramétrer `item-count`
+- ajouter un fichier d'historique de version

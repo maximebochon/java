@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<job id="some-job" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
+    <step id="some-step">
+
+        <chunk item-count="10">
+            <reader ref="some-reader">
+                <properties>
+                    <property name="duration" value="#{jobParameters['reader-duration']}"/>
+                    <property name="partition-id" value="#{partitionPlan['partition-id']}"/>
+                </properties>
+            </reader>
+            <processor ref="some-processor">
+                <properties>
+                    <property name="duration" value="#{jobParameters['processor-duration']}"/>
+                </properties>
+            </processor>
+            <writer ref="some-writer">
+                <properties>
+                    <property name="duration" value="#{jobParameters['writer-duration']}"/>
+                </properties>
+            </writer>
+        </chunk>
+
+        <partition>
+            <mapper ref="some-mapper"/>
+        </partition>
+
+    </step>
+</job>

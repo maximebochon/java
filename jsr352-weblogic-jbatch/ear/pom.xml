@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.bochon.java</groupId>
+        <artifactId>jsr352-weblogic-jbatch</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>jsr352-weblogic-jbatch-ear</artifactId>
+    <packaging>ear</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.bochon.java</groupId>
+            <artifactId>jsr352-weblogic-jbatch-war</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.parent.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <configuration>
+                    <modules>
+                        <webModule>
+                            <groupId>org.bochon.java</groupId>
+                            <artifactId>jsr352-weblogic-jbatch-war</artifactId>
+                            <contextRoot>/${project.build.finalName}</contextRoot>
+                        </webModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>deploy-ear</id>
+            <build>
+                <plugins>
+
+                    <!-- Load WebLogic configuration from file -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>properties-maven-plugin</artifactId>
+                        <version>1.0.0</version>
+                        <executions>
+                            <execution>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>read-project-properties</goal>
+                                </goals>
+                                <configuration>
+                                    <files>
+                                        <file>${project.parent.basedir}/conf/weblogic.properties</file>
+                                    </files>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Deploy EAR to WebLogic -->
+                    <plugin>
+                        <groupId>com.oracle.weblogic</groupId>
+                        <artifactId>weblogic-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <name>${project.build.finalName}</name>
+                            <user>${weblogic.user}</user>
+                            <password>${weblogic.password}</password>
+                            <source>${project.build.directory}/${project.build.finalName}.${project.packaging}</source>
+                            <upload>true</upload>
+                            <remote>${weblogic.remote}</remote>
+                            <verbose>false</verbose>
+                            <targets>${weblogic.target}</targets>
+                            <adminurl>t3://${weblogic.host}:${weblogic.port}</adminurl>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
