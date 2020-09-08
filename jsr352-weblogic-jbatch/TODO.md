@@ -1,6 +1,3 @@
-# Code
-- déclarer la servlet à l'aide d'une annotation `@WebServlet` plutôt que `web.xml`
-
 # Fonctionnalités
 - paramétrer la génération des éléments
 - paramétrer `item-count`
